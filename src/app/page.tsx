@@ -1,5 +1,6 @@
 "use client";
 import HeroCarousel from "@/components/HeroCarousel";
+import Highlight from "@/components/Highlight";
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
 const allProducts = [
@@ -34,6 +35,7 @@ export default function Home() {
         onRemoveWishlist={removeFromWishlist}
       />
       <HeroCarousel />
+      <Highlight />
     </section>
   );
 }
