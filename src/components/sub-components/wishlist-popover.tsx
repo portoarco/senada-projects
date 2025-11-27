@@ -1,3 +1,5 @@
+"use client";
+
 import { Heart, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -16,13 +18,13 @@ interface IWishlistPopoverProps {
   onRemove: (id: number) => void;
 }
 
-export default function WishlistItem({
+export default function WishlistPopover({
   items,
   count,
   onRemove,
 }: IWishlistPopoverProps) {
   const handleAskMore = () => {
-    const message = `Hi! I'm interested in these products:\n${items
+    const message = `Halo SENADA! Saya tertarik dengan produk berikut:\n${items
       .map((item) => `- ${item.name}`)
       .join("\n")}`;
     const whatsappUrl = `https://wa.me/6285602907659?text=${encodeURIComponent(
@@ -30,13 +32,14 @@ export default function WishlistItem({
     )}`;
     window.open(whatsappUrl, "_blank");
   };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="hover:bg-muted relative">
-          <Heart className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="relative hover:bg-muted">
+          <Heart className="h-5 w-5 text-foreground" />
           {count > 0 && (
-            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center animate-scale-in">
+            <span className="absolute -top-1 -right-1 bg-destructive text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold animate-in zoom-in">
               {count}
             </span>
           )}
@@ -44,18 +47,18 @@ export default function WishlistItem({
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0" align="end">
         <div className="p-4 border-b border-border">
-          <h3 className="font-semibold text-lg text-primary">Wishlist</h3>
+          <h3 className="font-bold text-lg text-foreground">Wishlist</h3>
           <p className="text-sm text-muted-foreground">
             {count} {count === 1 ? "item" : "items"}
           </p>
         </div>
 
-        <ScrollArea className="h-[300px]">
+        <ScrollArea className="h-[280px]">
           <div className="p-4 space-y-3">
             {items.length === 0 ? (
               <div className="text-center py-8">
-                <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-2 opacity-50" />
-                <p className="text-muted-foreground">Your wishlist is empty</p>
+                <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-2 opacity-30" />
+                <p className="text-muted-foreground text-sm">Wishlist kosong</p>
               </div>
             ) : (
               items.map((item) => (
@@ -63,10 +66,12 @@ export default function WishlistItem({
                   key={item.id}
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
                 >
-                  <div className="w-14 h-14 rounded-md overflow-hidden shrink-0">
+                  <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-muted">
                     <Image
-                      src={item.image}
+                      src={item.image || "/placeholder.svg"}
                       alt={item.name}
+                      width={56}
+                      height={56}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -78,7 +83,7 @@ export default function WishlistItem({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0"
+                    className="h-8 w-8 text-destructive hover:bg-destructive/10 shrink-0"
                     onClick={() => onRemove(item.id)}
                   >
                     <X className="h-4 w-4" />
@@ -92,10 +97,10 @@ export default function WishlistItem({
         {items.length > 0 && (
           <div className="p-4 border-t border-border">
             <Button
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300 hover:scale-105"
+              className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
               onClick={handleAskMore}
             >
-              Ask via WhatsApp
+              Tanya via WhatsApp
             </Button>
           </div>
         )}

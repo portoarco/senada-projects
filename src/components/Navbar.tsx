@@ -1,12 +1,13 @@
 "use client";
-import { Menu, Search, User } from "lucide-react";
+
+import { Menu, Search, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import SplitText from "./gsap-animated/SplitText";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import WishlistItem from "./sub-components/wishlist-popover";
+import WishlistPopover from "./sub-components/wishlist-popover";
 import ProfileDropdown from "./sub-components/profile-dropdown";
+import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   wishlistCount: number;
@@ -14,27 +15,11 @@ interface NavbarProps {
   onRemoveWishlist: (id: number) => void;
 }
 
-const menuLink = [
-  {
-    id: 1,
-    name: "Home",
-    link: "#",
-  },
-  {
-    id: 2,
-    name: "Products",
-    link: "#",
-  },
-  {
-    id: 3,
-    name: "Blog",
-    link: "#",
-  },
-  {
-    id: 4,
-    name: "Contact Us",
-    link: "#",
-  },
+const menuLinks = [
+  { id: 1, name: "Beranda", link: "#" },
+  { id: 2, name: "Produk", link: "#products" },
+  { id: 3, name: "Tentang", link: "#about" },
+  { id: 4, name: "Kontak", link: "#contact" },
 ];
 
 export default function Navbar({
@@ -42,65 +27,143 @@ export default function Navbar({
   wishlistItems,
   onRemoveWishlist,
 }: NavbarProps) {
-  const [showSearch, setShowSearch] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="flex z-50   justify-between items-center px-4 py-5 md:px-10 lg:px-20   ">
-      <section className="flex lg:gap-20 items-center">
-        <div>
-          <SplitText
-            text="SENADA"
-            className="max-sm:text-xl text-2xl mt-2 font-bold "
-            delay={100}
-            duration={0.6}
-            ease="power3.out"
-            splitType="chars"
-            from={{ opacity: 0, y: 40 }}
-            to={{ opacity: 1, y: 0 }}
-            threshold={0.1}
-            textAlign="center"
-          />
-        </div>
-        <div>
-          <ul className="flex gap-10 max-lg:hidden">
-            {menuLink.map((menu, idx) => (
-              <li key={idx}>
-                <Link href={menu.link} className=" ">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        isScrolled
+          ? "bg-card/95 backdrop-blur-md shadow-sm border-b border-border"
+          : "bg-transparent"
+      )}
+    >
+      <nav className="container mx-auto flex items-center justify-between px-4 py-4 md:px-6 lg:px-8">
+        {/* Logo & Desktop Menu */}
+        <section className="flex items-center gap-8 lg:gap-12">
+          <Link href="/" className="shrink-0">
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tighter text-primary">
+              SENADA
+            </h1>
+          </Link>
+
+          <ul className="hidden lg:flex items-center gap-8">
+            {menuLinks.map((menu) => (
+              <li key={menu.id}>
+                <Link
+                  href={menu.link}
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
+                >
                   {menu.name}
                 </Link>
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-      <section id="cta" className="flex gap-1 lg:gap-3 ">
-        {/* Phone */}
-        <div>
-          <Button variant={"ghost"} className="md:hidden">
-            <Search></Search>
-          </Button>
-        </div>
-        {/* Desktop */}
-        <div className="relative max-sm:hidden ">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors text-p" />
-          <Input
-            type="text"
-            placeholder="Search products..."
-            // value={searchQuery}
-            // onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 w-48 md:w-64 transition-all duration-300 focus:w-56 md:focus:w-80  border-border focus:border-primary bg-white"
-          />
-        </div>
+        </section>
 
-        <WishlistItem
-          items={wishlistItems}
-          count={wishlistCount}
-          onRemove={onRemoveWishlist}
-        />
-        <ProfileDropdown />
-        <Button variant={"secondary"} className="lg:hidden">
-          <Menu />
-        </Button>
-      </section>
-    </nav>
+        {/* Actions */}
+        <section className="flex items-center gap-2 md:gap-3">
+          {/* Desktop Search */}
+          <div className="relative hidden md:block">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Cari produk..."
+              className="h-10 w-48 rounded-full border-border bg-muted/50 pl-10 pr-4 text-sm transition-all focus:w-64 focus:bg-card lg:w-56"
+            />
+          </div>
+
+          {/* Mobile Search Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden text-foreground hover:bg-muted"
+            onClick={() => {
+              setShowMobileSearch(!showMobileSearch);
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            <Search className="h-5 w-5" />
+          </Button>
+
+          {/* Wishlist */}
+          <WishlistPopover
+            items={wishlistItems}
+            count={wishlistCount}
+            onRemove={onRemoveWishlist}
+          />
+
+          {/* Profile */}
+          <div className="hidden sm:block">
+            <ProfileDropdown />
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden text-foreground hover:bg-muted"
+            onClick={() => {
+              setIsMobileMenuOpen(!isMobileMenuOpen);
+              setShowMobileSearch(false);
+            }}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </Button>
+        </section>
+      </nav>
+
+      {/* Mobile Search */}
+      {showMobileSearch && (
+        <div className="border-b border-border bg-card px-4 py-3 md:hidden animate-in slide-in-from-top-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              autoFocus
+              placeholder="Cari produk batik..."
+              className="w-full pl-10 bg-muted/50"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="border-t border-border bg-card px-4 py-4 shadow-lg lg:hidden animate-in slide-in-from-top-5">
+          <ul className="flex flex-col gap-1">
+            {menuLinks.map((menu) => (
+              <li key={menu.id}>
+                <Link
+                  href={menu.link}
+                  className="block px-4 py-3 text-sm font-medium text-foreground hover:text-primary hover:bg-muted rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {menu.name}
+                </Link>
+              </li>
+            ))}
+            <li className="pt-3 mt-2 border-t border-border sm:hidden">
+              <div className="px-4">
+                <ProfileDropdown />
+              </div>
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
   );
 }

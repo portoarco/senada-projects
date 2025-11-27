@@ -1,7 +1,14 @@
 "use client";
+import Footer from "@/components/Footer";
 import HeroCarousel from "@/components/HeroCarousel";
 import Highlight from "@/components/Highlight";
+import LatestActivitySection from "@/components/LatestActivity";
+import LiveChat from "@/components/LiveChat";
 import Navbar from "@/components/Navbar";
+import PartnershipSection from "@/components/Partnership";
+import ProductsSection from "@/components/Products";
+import SocialMediaSection from "@/components/SocialMedia";
+import TestimonialsSection from "@/components/Testimonials";
 import { useState } from "react";
 const allProducts = [
   { id: 1, name: "Nama Produk", image: "/assets/1.jpeg" },
@@ -36,6 +43,13 @@ export default function Home() {
       />
       <HeroCarousel />
       <Highlight />
+      <ProductsSection wishlist={wishlist} onToggleWishlist={toggleWishlist} />
+      <LatestActivitySection />
+      <PartnershipSection />
+      <TestimonialsSection />
+      <SocialMediaSection />
+      <Footer />
+      <LiveChat />
     </section>
   );
 }
