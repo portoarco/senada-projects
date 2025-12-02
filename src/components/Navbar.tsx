@@ -18,8 +18,8 @@ interface NavbarProps {
 const menuLinks = [
   { id: 1, name: "Beranda", link: "#" },
   { id: 2, name: "Produk", link: "#products" },
-  { id: 3, name: "Tentang", link: "#about" },
-  { id: 4, name: "Kontak", link: "#contact" },
+  { id: 3, name: "Aktivitas", link: "#activities" },
+  { id: 4, name: "Mitra", link: "#partnership" },
 ];
 
 export default function Navbar({
@@ -40,7 +40,7 @@ export default function Navbar({
   }, []);
 
   return (
-    <header
+    <nav
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         isScrolled
@@ -164,6 +164,6 @@ export default function Navbar({
           </ul>
         </div>
       )}
-    </header>
+    </nav>
   );
 }

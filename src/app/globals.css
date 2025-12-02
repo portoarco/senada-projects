@@ -118,6 +118,7 @@
   * {
     @apply border-border outline-ring/50;
     font-family: "Kumbh Sans", sans-serif;
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-background text-foreground;

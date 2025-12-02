@@ -4,11 +4,12 @@ import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import HighlightModal from "./sub-components/highlight-modal";
+import { Badge } from "./ui/badge";
 
 interface Product {
   id: number;
   name: string;
-  desc: string;
+  category: string;
   longDesc: string;
   imgUrl: string;
   customClass: string;
@@ -18,7 +19,7 @@ const highlightProducts: Product[] = [
   {
     id: 1,
     name: "Baju Batik Tulis",
-    desc: "Koleksi Premium",
+    category: "Koleksi Premium",
     longDesc:
       "Dibuat dengan teknik tulis tradisional menggunakan bahan sutra premium. Motif Parang Rusak memberikan kesan elegan dan berkelas untuk acara formal.",
     imgUrl: "/herobg1.jpg",
@@ -27,7 +28,7 @@ const highlightProducts: Product[] = [
   {
     id: 2,
     name: "Aksesoris Etnik",
-    desc: "Handcrafted",
+    category: "Handcrafted",
     longDesc:
       "Lengkapi penampilan Anda dengan koleksi aksesoris handmade. Mulai dari kalung etnik hingga gelang tenun yang dibuat oleh pengrajin lokal Surakarta.",
     imgUrl: "/herobg1.jpg",
@@ -36,7 +37,7 @@ const highlightProducts: Product[] = [
   {
     id: 3,
     name: "Celana Batik",
-    desc: "Casual Comfort",
+    category: "Casual Comfort",
     longDesc:
       "Celana santai dengan potongan loose fit. Menggunakan pewarna alam indigo yang ramah lingkungan dan sejuk dipakai seharian.",
     imgUrl: "/herobg1.jpg",
@@ -45,7 +46,7 @@ const highlightProducts: Product[] = [
   {
     id: 4,
     name: "Kain Batik Tulis",
-    desc: "Masterpiece",
+    category: "Masterpiece",
     longDesc:
       "Mahakarya batik tulis asli dengan detail pengerjaan hingga 3 bulan. Cocok untuk bahan kemeja premium atau koleksi pribadi.",
     imgUrl: "/herobg1.jpg",
@@ -103,9 +104,12 @@ export default function Highlight() {
               </div>
 
               <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                <span className="text-primary text-xs font-bold uppercase tracking-wider">
-                  {prd.desc}
-                </span>
+                <Badge className="bg-white">
+                  <span className="text-primary text-xs font-bold uppercase tracking-wider">
+                    {prd.category}
+                  </span>
+                </Badge>
+
                 <h3 className="text-white font-bold text-xl md:text-2xl mt-1">
                   {prd.name}
                 </h3>

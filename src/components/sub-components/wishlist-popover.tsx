@@ -45,7 +45,7 @@ export default function WishlistPopover({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" align="end">
+      <PopoverContent className="w-70 md:w-80 p-0" align="end">
         <div className="p-4 border-b border-border">
           <h3 className="font-bold text-lg text-foreground">Wishlist</h3>
           <p className="text-sm text-muted-foreground">

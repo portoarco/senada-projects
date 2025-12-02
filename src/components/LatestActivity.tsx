@@ -43,7 +43,7 @@ const LatestActivitySection = () => {
   >(null);
 
   return (
-    <>
+    <section id="activities">
       <section className="py-16 md:py-24 bg-card">
         <div className="container mx-auto px-4">
           {/* Header */}
@@ -120,7 +120,7 @@ const LatestActivitySection = () => {
         title={selectedActivity?.title || ""}
         description={selectedActivity?.description || ""}
       />
-    </>
+    </section>
   );
 };
 

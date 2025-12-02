@@ -87,7 +87,7 @@ const InstagramSection = () => {
 
           {/* --- SISI KANAN: ARTISTIC COLLAGE --- */}
           <div className="order-1 lg:order-2">
-            <div className="grid grid-cols-2 gap-4 h-[500px]">
+            <div className="grid grid-cols-2 gap-4 h-[250px] md:h-[400px]">
               {/* Gambar 1 (Kiri, Tinggi Penuh) */}
               <motion.div
                 className="relative rounded-2xl overflow-hidden shadow-2xl  group"

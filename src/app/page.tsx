@@ -35,7 +35,7 @@ export default function Home() {
     (id) => allProducts.find((p) => p.id === id)!
   );
   return (
-    <section className="h-1000">
+    <section className="">
       <Navbar
         wishlistCount={wishlist.length}
         wishlistItems={wishlistItems}
